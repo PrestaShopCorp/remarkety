@@ -46,93 +46,11 @@
  * @copyright 2015-2022 Interamind Ltd
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-abstract class RemarketyProxyAbstractProxy
+class RemarketyConfiguration
 {
-
-    /**
-     * The store ID
-     */
-    protected $store_id = null;
-    protected $api_key = null;
-    protected $base_url = null;
-
-    /**
-     * The server URL for the requst
-     */
-    protected $url = null;
-
-    protected $client = null;
-
-    protected $is_post = false;
-
-    public function __construct($base_url)
-    {
-        $this->base_url = $base_url;
-    }
-
-    /**
-     *
-     * Initialize the proxy. Get the URL of the store's platform
-     * from, the database according to the store ID.
-     */
-    public function init()
-    {
-        $this->initUrl($this->base_url);
-
-        return true;
-    }
-
-    public function initUrl($base_url)
-    {
-        $this->url = $base_url;
-    }
-
-    /**
-     *
-     * @param array $action (action name, action value)
-     */
-    abstract public function setAction($action);
-
-    /**
-     *
-     * @param array $action (param name, param value)
-     */
-    abstract public function setParams($params);
-
-    /**
-     *
-     * @param mixed $client
-     */
-    protected function setClient($client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     *
-     * @return mixed
-     */
-    protected function getClient()
-    {
-        //$this->client is an object and returend by reference by default
-        return $this->client;
-    }
-
-    public function setPost($is_post)
-    {
-        $this->is_post = $is_post;
-    }
-
-    public function isPost()
-    {
-        return $this->is_post;
-    }
+    const REMARKETY_BASE_URL           = 'https://app.remarkety.com';
+    const REMARKETY_INSTALL_ENDPOINT   = '/public/install/notify';
+    const REMARKETY_UNINSTALL_ENDPOINT = '/public/install/uninstall';
+    const REMARKETY_PLUGIN_VERSION     = '1.1.0';
+    const REMARKETY_OEM                = 'remarkety';
 }

@@ -46,93 +46,37 @@
  * @copyright 2015-2022 Interamind Ltd
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
-abstract class RemarketyProxyAbstractProxy
+class RemarketyHelper
 {
 
-    /**
-     * The store ID
-     */
-    protected $store_id = null;
-    protected $api_key = null;
-    protected $base_url = null;
-
-    /**
-     * The server URL for the requst
-     */
-    protected $url = null;
-
-    protected $client = null;
-
-    protected $is_post = false;
-
-    public function __construct($base_url)
+    public static function handleVoucherFromUrl($cart_controller)
     {
-        $this->base_url = $base_url;
-    }
+        if (CartRule::isFeatureActive()) {
+            if (Tools::isSubmit('submitAddDiscount')) {
+                $context = Context::getContext();
+                if (!($code = trim(Tools::getValue('discount_name')))) {
+                    $cart_controller->errors[] = Tools::displayError('You must enter a voucher code.');
+                } elseif (!Validate::isCleanHtml($code)) {
+                    $cart_controller->errors[] = Tools::displayError('The voucher code is invalid.');
+                } else {
+                    if (($cart_rule = new CartRule(CartRule::getIdByCode($code))) &&
+                        Validate::isLoadedObject($cart_rule)
+                    ) {
+                        $context->cart->addcart_rule($cart_rule->id);
 
-    /**
-     *
-     * Initialize the proxy. Get the URL of the store's platform
-     * from, the database according to the store ID.
-     */
-    public function init()
-    {
-        $this->initUrl($this->base_url);
+                        if (!$cart_rule->checkValidity($context, false, true)) {
+                            $context->cart->addcart_rule($cart_rule->id);
+                        }
+                    } else {
+                        $cart_controller->errors[] = Tools::displayError('This voucher does not exists.');
+                    }
+                }
+                $context->smarty->assign(array(
+                    'errors' => $cart_controller->errors,
+                    'discount_name' => Tools::safeOutput($code)
+                ));
+            }
 
-        return true;
-    }
-
-    public function initUrl($base_url)
-    {
-        $this->url = $base_url;
-    }
-
-    /**
-     *
-     * @param array $action (action name, action value)
-     */
-    abstract public function setAction($action);
-
-    /**
-     *
-     * @param array $action (param name, param value)
-     */
-    abstract public function setParams($params);
-
-    /**
-     *
-     * @param mixed $client
-     */
-    protected function setClient($client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     *
-     * @return mixed
-     */
-    protected function getClient()
-    {
-        //$this->client is an object and returend by reference by default
-        return $this->client;
-    }
-
-    public function setPost($is_post)
-    {
-        $this->is_post = $is_post;
-    }
-
-    public function isPost()
-    {
-        return $this->is_post;
+        }
     }
 }
