@@ -379,6 +379,7 @@ class Remarkety extends Module
             'remarkety_lastname' => $remarkety_lastname,
             'remarkety_phone' => $remarkety_phone,
             'remarkety_terms' => $remarkety_terms
+
         );
         return $this->displayTemplate($output, 'create-account', $smarty_vars);
     }
@@ -445,7 +446,7 @@ class Remarkety extends Module
         $res = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
 		SELECT w.id_webservice_account
 		FROM '._DB_PREFIX_.'webservice_account w
-		WHERE w.key = \''.$key.'\'');
+		WHERE w.key = \''.pSQL($key).'\'');
 
         return $res;
     }
@@ -472,13 +473,11 @@ class Remarkety extends Module
         $ws_key->description = 'remarkety';
         $ws_key->add();
         $account_id = $this->getKeyAccountId($new_key);
-        $permissions = Tools::jsonDecode('{"addresses":{"GET":"on"},"carriers":{"GET":"on"},
-		    "cart_rules":{"GET":"on"},"cart_rules":{"PUT":"on"},"cart_rules":{"POST":"on"},"cart_rules":{"DELETE":"on"},
+        $permissions = Tools::jsonDecode('{"addresses":{"GET":"on"},"carriers":{"GET":"on"},"cart_rules":{"GET":"on"},
             "carts":{"GET":"on"},"categories":{"GET":"on"},"combinations":{"GET":"on"},"configurations":{"GET":"on"},
             "contacts":{"GET":"on"},"content_management_system":{"GET":"on"},"countries":{"GET":"on"},
             "currencies":{"GET":"on"},"customer_messages":{"GET":"on"},"customer_threads":{"GET":"on"},
-            "customers":{"GET":"on"},"customers":{"PUT":"on"},"customers":{"POST":"on"},
-            "customizations":{"GET":"on"},"deliveries":{"GET":"on"},"employees":{"GET":"on"},
+            "customers":{"GET":"on"},"customizations":{"GET":"on"},"deliveries":{"GET":"on"},"employees":{"GET":"on"},
             "groups":{"GET":"on"},"guests":{"GET":"on"},"image_types":{"GET":"on"},"images":{"GET":"on"},
             "languages":{"GET":"on"},"manufacturers":{"GET":"on"},"order_carriers":{"GET":"on"},
             "order_details":{"GET":"on"},"order_discounts":{"GET":"on"},"order_histories":{"GET":"on"},
@@ -602,7 +601,7 @@ class Remarkety extends Module
         return $this->displayTemplate($output, 'main', $vars);
     }
 
-    protected function displayTemplate($output, $template, $smarty_vars = [])
+    protected function displayTemplate($output, $template, $smarty_vars = array())
     {
         $base_vars = array(
             'module_url' => $this->module_url,
