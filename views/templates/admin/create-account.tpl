@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
                 <div class="checkbox">
-                    <label style="'.$label_text_align.'">
+                    <label>
                         <input id="remarkety_terms" name="remarkety_terms" type="checkbox"
                                {if isset($remarkety_terms) && remarkety_terms == true}checked="checked"{/if}/>
                         <span style="color: white;">{l s='I agree to ' mod='remarkety'}</span>
@@ -70,7 +70,7 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group" style="'.$submit_buttons_style.'">
+            <div class="form-group">
                 <button type="submit" class="btn btn-default btn-submit" name="remarkety_submit_create">
                     {l s='Start Your Account' mod='remarkety'}</button>
                 <button type="submit" class="btn-link"

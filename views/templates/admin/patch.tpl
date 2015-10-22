@@ -49,7 +49,7 @@
                 </ul>
             </div>
             <div class="checkbox">
-                <label style="'.$label_text_align.'">
+                <label>
                     <input id="remarkety_dont_show" name="remarkety_dont_show" type="checkbox"/>
                     <span style="color: white;">{l s='Do not show again' mod='remarkety'}</span>
                 </label>

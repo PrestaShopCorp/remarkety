@@ -594,7 +594,8 @@ Buttons
 .btn-bluebg {
     padding: 15px 35px;
     border-radius: 0;
-    border: 2px solid color : #FFF;
+    border: 2px solid; 
+    color : #FFF;
     background-color: #1A9FF9;
     border-color: #1A9FF9;
     font-size: 14px;
